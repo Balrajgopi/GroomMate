@@ -1,20 +1,27 @@
-﻿@model List<GroomMate.Models.Appointment>
-@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+﻿@model IEnumerable<GroomMate.Models.Appointment>
+@{ ViewBag.Title = "Staff Dashboard"; Layout = "~/Views/Shared/_Layout.cshtml"; }
 
-<h3>Assigned Appointments</h3>
-<table class="table">
-    <thead>
-        <tr><th>Service</th><th>Date</th><th>Status</th></tr>
+<h3>My Assigned Appointments</h3>
+<a href="@Url.Action("Logout", "Account")" class="btn btn-secondary mb-3">Logout</a>
+
+<table class="table table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
     </thead>
     <tbody>
-        @foreach (var app in Model)
+        @foreach (var appt in Model)
         {
             <tr>
-                <td>@app.Service.ServiceName</td>
-                <td>@app.AppointmentDate.ToString("g")</td>
-                <td>@app.Status</td>
+                <td>@appt.User.FullName</td>
+                <td>@appt.Service.ServiceName</td>
+                <td>@appt.AppointmentDate.ToString("dd-MM-yyyy hh:mm tt")</td>
+                <td><span class="badge bg-success">@appt.Status</span></td>
             </tr>
         }
     </tbody>
 </table>
-<a href="@Url.Action("Logout", "Account")" class="btn btn-secondary">Logout</a>

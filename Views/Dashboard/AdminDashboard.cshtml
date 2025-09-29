@@ -1,11 +1,11 @@
-﻿@model List<GroomMate.Models.Appointment>
-@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+﻿@model IEnumerable<GroomMate.Models.Appointment>
+@{ ViewBag.Title = "Admin Dashboard"; Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 <h3>All Appointments</h3>
 <a href="@Url.Action("Logout", "Account")" class="btn btn-secondary mb-3">Logout</a>
 
-<table class="table">
-    <thead>
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
         <tr>
             <th>Customer</th>
             <th>Service</th>
@@ -16,25 +16,43 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var app in Model)
+        @foreach (var appt in Model)
         {
             <tr>
-                <td>@app.Customer.FullName</td>
-                <td>@app.Service.ServiceName</td>
-                <td>@app.AppointmentDate.ToString("g")</td>
-                <td>@app.Status</td>
-                <td>@(app.Staff?.FullName ?? "Unassigned")</td>
+                <td>@appt.User.FullName</td>
+                <td>@appt.Service.ServiceName</td>
+                <td>@appt.AppointmentDate.ToString("dd-MM-yyyy hh:mm tt")</td>
+                <td><span class="badge bg-info text-dark">@appt.Status</span></td>
                 <td>
-                    @if (app.Status == "Pending")
+                    @if (appt.StaffId != null)
                     {
-                        using (Html.BeginForm("ConfirmAppointment", "Dashboard", new { id = app.AppointmentID }, FormMethod.Post, new { @class = "d-inline" }))
+                        @appt.Staff.FullName
+                    }
+                    else
+                    {
+                        <span class="text-danger">Unassigned</span>
+                    }
+                </td>
+                <td>
+                    @if (appt.Status == "Pending")
+                    {
+                        using (Html.BeginForm("AssignStaff", "Dashboard", FormMethod.Post, new { @class = "d-flex" }))
                         {
-                            <button type="submit" class="btn btn-sm btn-success">Confirm</button>
+                            <input type="hidden" name="appointmentId" value="@appt.AppointmentID" />
+                            @Html.DropDownList("staffId", (SelectList)ViewBag.StaffList, "Select Staff", new { @class = "form-select form-select-sm me-2" })
+                            <button type="submit" class="btn btn-sm btn-primary">Assign</button>
                         }
-                        using (Html.BeginForm("RejectAppointment", "Dashboard", new { id = app.AppointmentID }, FormMethod.Post, new { @class = "d-inline" }))
+                    }
+                    else if (appt.Status == "Confirmed")
+                    {
+                        using (Html.BeginForm("MarkAsCompleted", "Dashboard", new { appointmentId = appt.AppointmentID }, FormMethod.Post))
                         {
-                            <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                            <button type="submit" class="btn btn-sm btn-success">Complete</button>
                         }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No actions</span>
                     }
                 </td>
             </tr>

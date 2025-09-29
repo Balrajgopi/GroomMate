@@ -1,6 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema; // Add this using statement
-
+﻿using GroomMate.Models;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace GroomMate.Models
 {
     public class Appointment
@@ -9,17 +9,17 @@ namespace GroomMate.Models
         public int UserID { get; set; }
         public int ServiceID { get; set; }
         public DateTime AppointmentDate { get; set; }
-        public string Status { get; set; } // Pending, Confirmed, Rejected, Completed
-        public int? StaffID { get; set; }
+        public string Status { get; set; } // e.g., "Pending", "Confirmed", "Completed", "Rejected"
 
-        [ForeignKey("UserID")] // This maps UserID to the Customer property
-        public virtual User Customer { get; set; }
+        // NEW: Add a nullable foreign key for the assigned staff member
+        public int? StaffId { get; set; }
 
+        // Navigation properties
+        public virtual User User { get; set; }
         public virtual Service Service { get; set; }
 
-        [ForeignKey("StaffID")] // This maps StaffID to the Staff property
+        // NEW: Navigation property to the assigned staff member
+        [ForeignKey("StaffId")]
         public virtual User Staff { get; set; }
-
-        public virtual Feedback Feedback { get; set; }
     }
 }

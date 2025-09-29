@@ -22,25 +22,38 @@
             );
             context.SaveChanges();
 
-            // Step 2: Seed Admin User (only if it doesn't exist)
+            // Step 2: Seed Admin User
             if (!context.Users.Any(u => u.Username == "admin"))
             {
-                // Find the RoleID for "Admin" after it has been saved
                 var adminRole = context.Roles.Single(r => r.RoleName == "Admin");
-
                 var adminUser = new User
                 {
                     FullName = "Admin User",
                     Username = "admin",
-                    Password = "password", // IMPORTANT: Use a hashed password in a real application
+                    Password = "password",
                     Email = "admin@groommate.com",
-                    RoleID = adminRole.RoleID // Corrected to use RoleID and reference the saved role
+                    RoleID = adminRole.RoleID
                 };
                 context.Users.Add(adminUser);
             }
+
+            // NEW: Step 3: Seed Staff User
+            if (!context.Users.Any(u => u.Username == "staff"))
+            {
+                var staffRole = context.Roles.Single(r => r.RoleName == "Staff");
+                var staffUser = new User
+                {
+                    FullName = "Staff Member",
+                    Username = "staff",
+                    Password = "password",
+                    Email = "staff@groommate.com",
+                    RoleID = staffRole.RoleID
+                };
+                context.Users.Add(staffUser);
+            }
             context.SaveChanges();
 
-            // Step 3: Seed Services
+            // Step 4: Seed Services
             context.Services.AddOrUpdate(
                 s => s.ServiceName,
                 new Service { ServiceName = "Classic Haircut", Description = "A timeless, classic haircut.", Price = 250m },

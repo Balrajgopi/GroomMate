@@ -1,26 +1,47 @@
-﻿@model List<GroomMate.Models.Appointment>
-@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+﻿@model IEnumerable<GroomMate.Models.Appointment>
+@{ ViewBag.Title = "My Appointments"; Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 <h3>My Appointments</h3>
+<a href="@Url.Action("CustomerDashboard", "Dashboard")" class="btn btn-info mb-3">Back to Dashboard</a>
+
 <table class="table">
     <thead>
-        <tr><th>Service</th><th>Date</th><th>Status</th><th>Action</th></tr>
+        <tr>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
     </thead>
     <tbody>
-        @foreach (var app in Model)
+        @foreach (var appointment in Model)
         {
             <tr>
-                <td>@app.Service.ServiceName</td>
-                <td>@app.AppointmentDate.ToString("g")</td>
-                <td>@app.Status</td>
+                <td>@appointment.Service.ServiceName</td>
+                <td>@appointment.AppointmentDate.ToString("dd-MM-yyyy hh:mm tt")</td>
+                <td>@appointment.Status</td>
                 <td>
-                    @if (app.Status == "Completed" && app.Feedback == null)
+                    @if (appointment.Status == "Completed")
                     {
-                        <a href="@Url.Action("Submit", "Feedback", new { appointmentId = app.AppointmentID })">Submit Feedback</a>
+                        // Check if feedback has already been given
+                        var db = new GroomMate.Models.GroomMateContext();
+                        var hasFeedback = db.Feedbacks.Any(f => f.AppointmentID == appointment.AppointmentID);
+
+                        if (hasFeedback)
+                        {
+                            <span class="badge bg-success">Feedback Submitted</span>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Submit", "Feedback", new { appointmentId = appointment.AppointmentID })" class="btn btn-primary btn-sm">Give Feedback</a>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No actions available</span>
                     }
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<a href="@Url.Action("CustomerDashboard", "Dashboard")" class="btn btn-primary">Back to Dashboard</a>
