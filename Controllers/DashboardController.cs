@@ -1,5 +1,4 @@
-﻿using GroomMate.Controllers;
-using GroomMate.Models;
+﻿using GroomMate.Models;
 using System;
 using System.Web.Mvc;
 using System.Data.Entity;
@@ -22,16 +21,17 @@ namespace GroomMate.Controllers
                 .Include(a => a.Staff)
                 .ToList();
 
-            ViewBag.StaffList = new SelectList(db.Users.Where(u => u.Role.RoleName == "Staff"), "UserID", "FullName");
+            // --- UPDATED LOGIC ---
+            // Filters the staff list to only include users who are not marked as deleted.
+            ViewBag.StaffList = new SelectList(db.Users.Where(u => u.Role.RoleName == "Staff" && !u.IsDeleted), "UserID", "FullName");
 
             return View(allAppointments);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public ActionResult AssignStaff(int appointmentId, int? staffId) // CORRECTED: Nullable int
+        public ActionResult AssignStaff(int appointmentId, int? staffId)
         {
-            // Server-side validation
             if (staffId == null)
             {
                 TempData["ErrorMessage"] = "Please select a staff member to assign.";
@@ -41,7 +41,7 @@ namespace GroomMate.Controllers
             var appointment = db.Appointments.Find(appointmentId);
             if (appointment != null)
             {
-                appointment.StaffId = staffId.Value; // Use .Value for nullable type
+                appointment.StaffId = staffId.Value;
                 appointment.Status = "Confirmed";
                 db.SaveChanges();
             }

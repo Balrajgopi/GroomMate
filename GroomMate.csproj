@@ -139,6 +139,10 @@
     <Compile Include="Migrations\202509291311566_AddStaffIdToAppointment.Designer.cs">
       <DependentUpon>202509291311566_AddStaffIdToAppointment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202509291447092_AddIsDeletedToUser.cs" />
+    <Compile Include="Migrations\202509291447092_AddIsDeletedToUser.Designer.cs">
+      <DependentUpon>202509291447092_AddIsDeletedToUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Appointment.cs" />
     <Compile Include="Models\Feedback.cs" />
@@ -246,6 +250,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202509291311566_AddStaffIdToAppointment.resx">
       <DependentUpon>202509291311566_AddStaffIdToAppointment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202509291447092_AddIsDeletedToUser.resx">
+      <DependentUpon>202509291447092_AddIsDeletedToUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
