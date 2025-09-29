@@ -1,0 +1,26 @@
+﻿@model List<GroomMate.Models.Appointment>
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<h3>My Appointments</h3>
+<table class="table">
+    <thead>
+        <tr><th>Service</th><th>Date</th><th>Status</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var app in Model)
+        {
+            <tr>
+                <td>@app.Service.ServiceName</td>
+                <td>@app.AppointmentDate.ToString("g")</td>
+                <td>@app.Status</td>
+                <td>
+                    @if (app.Status == "Completed" && app.Feedback == null)
+                    {
+                        <a href="@Url.Action("Submit", "Feedback", new { appointmentId = app.AppointmentID })">Submit Feedback</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="@Url.Action("CustomerDashboard", "Dashboard")" class="btn btn-primary">Back to Dashboard</a>

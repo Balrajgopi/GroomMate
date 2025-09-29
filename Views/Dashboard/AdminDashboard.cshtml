@@ -1,0 +1,43 @@
+﻿@model List<GroomMate.Models.Appointment>
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<h3>All Appointments</h3>
+<a href="@Url.Action("Logout", "Account")" class="btn btn-secondary mb-3">Logout</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Staff</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var app in Model)
+        {
+            <tr>
+                <td>@app.Customer.FullName</td>
+                <td>@app.Service.ServiceName</td>
+                <td>@app.AppointmentDate.ToString("g")</td>
+                <td>@app.Status</td>
+                <td>@(app.Staff?.FullName ?? "Unassigned")</td>
+                <td>
+                    @if (app.Status == "Pending")
+                    {
+                        using (Html.BeginForm("ConfirmAppointment", "Dashboard", new { id = app.AppointmentID }, FormMethod.Post, new { @class = "d-inline" }))
+                        {
+                            <button type="submit" class="btn btn-sm btn-success">Confirm</button>
+                        }
+                        using (Html.BeginForm("RejectAppointment", "Dashboard", new { id = app.AppointmentID }, FormMethod.Post, new { @class = "d-inline" }))
+                        {
+                            <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,22 @@
+﻿@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<h3>Submit Feedback</h3>
+@using (Html.BeginForm("Submit", "Feedback", FormMethod.Post))
+{
+    <input type="hidden" name="appointmentId" value="@ViewBag.AppointmentId" />
+    <div class="mb-3">
+        <label class="form-label">Rating (1-5)</label>
+        <select name="rating" class="form-control" required>
+            <option value="5">5 - Excellent</option>
+            <option value="4">4 - Good</option>
+            <option value="3">3 - Average</option>
+            <option value="2">2 - Poor</option>
+            <option value="1">1 - Very Poor</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Comments</label>
+        <textarea name="comments" class="form-control" rows="4"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Feedback</button>
+}

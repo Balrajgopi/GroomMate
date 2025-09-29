@@ -1,0 +1,30 @@
+﻿@model List<GroomMate.Models.Service>
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<h3>Our Services</h3>
+<a href="@Url.Action("ViewAppointments", "Dashboard")" class="btn btn-info mb-3">View My Appointments</a>
+<a href="@Url.Action("Logout", "Account")" class="btn btn-secondary mb-3">Logout</a>
+
+<table class="table">
+    <thead>
+        <tr><th>Name</th><th>Description</th><th>Price</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var service in Model)
+        {
+            <tr>
+                <td>@service.ServiceName</td>
+                <td>@service.Description</td>
+                <td>@service.Price.ToString("C")</td>
+                <td>
+                    @using (Html.BeginForm("BookAppointment", "Dashboard", FormMethod.Post))
+                    {
+                        <input type="hidden" name="serviceId" value="@service.ServiceID" />
+                        <input type="datetime-local" name="appointmentDate" required />
+                        <button type="submit" class="btn btn-sm btn-success">Book</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

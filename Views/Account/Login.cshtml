@@ -1,0 +1,30 @@
+﻿@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card" style="max-width: 400px; width: 100%;">
+        <div class="card-body">
+            <h3 class="card-title text-center">Login</h3>
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+            {
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required />
+                </div>
+                if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+                }
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            }
+            <div class="text-center mt-3">
+                <a href="@Url.Action("Register", "Account")">Don't have an account? Register</a>
+            </div>
+        </div>
+    </div>
+</div>
