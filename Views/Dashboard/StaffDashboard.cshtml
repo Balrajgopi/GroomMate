@@ -17,8 +17,14 @@
         @foreach (var appt in Model)
         {
             <tr>
-                <td>@appt.User.FullName</td>
-                <td>@appt.Service.ServiceName</td>
+                <td>
+                    @* SAFE CODE: Prevents crash if User is missing *@
+                    @(appt.User?.FullName ?? "User Not Found")
+                </td>
+                <td>
+                    @* SAFE CODE: Prevents crash if Service is missing *@
+                    @(appt.Service?.ServiceName ?? "Service Not Found")
+                </td>
                 <td>@appt.AppointmentDate.ToString("dd-MM-yyyy hh:mm tt")</td>
                 <td><span class="badge bg-success">@appt.Status</span></td>
             </tr>

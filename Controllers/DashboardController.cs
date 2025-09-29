@@ -1,8 +1,9 @@
-﻿using GroomMate.Models;
+﻿using GroomMate.Controllers;
+using GroomMate.Models;
 using System;
 using System.Web.Mvc;
 using System.Data.Entity;
-using System.Linq; // <--- THIS IS THE FIX
+using System.Linq;
 
 namespace GroomMate.Controllers
 {
@@ -15,24 +16,33 @@ namespace GroomMate.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult AdminDashboard()
         {
-            var allAppointments = db.Appointments.Include(a => a.User).Include(a => a.Service).Include(a => a.Staff).ToList();
+            var allAppointments = db.Appointments
+                .Include(a => a.User)
+                .Include(a => a.Service)
+                .Include(a => a.Staff)
+                .ToList();
 
-            // Get a list of all staff members to populate the dropdown
             ViewBag.StaffList = new SelectList(db.Users.Where(u => u.Role.RoleName == "Staff"), "UserID", "FullName");
 
             return View(allAppointments);
         }
 
-        // NEW: Actions for Admin to manage appointments
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public ActionResult AssignStaff(int appointmentId, int staffId)
+        public ActionResult AssignStaff(int appointmentId, int? staffId) // CORRECTED: Nullable int
         {
+            // Server-side validation
+            if (staffId == null)
+            {
+                TempData["ErrorMessage"] = "Please select a staff member to assign.";
+                return RedirectToAction("AdminDashboard");
+            }
+
             var appointment = db.Appointments.Find(appointmentId);
             if (appointment != null)
             {
-                appointment.StaffId = staffId;
-                appointment.Status = "Confirmed"; // Automatically confirm when staff is assigned
+                appointment.StaffId = staffId.Value; // Use .Value for nullable type
+                appointment.Status = "Confirmed";
                 db.SaveChanges();
             }
             return RedirectToAction("AdminDashboard");
@@ -76,7 +86,10 @@ namespace GroomMate.Controllers
         public ActionResult ViewAppointments()
         {
             int userId = (int)Session["UserID"];
-            var userAppointments = db.Appointments.Where(a => a.UserID == userId).Include(a => a.Service).ToList();
+            var userAppointments = db.Appointments
+                .Where(a => a.UserID == userId)
+                .Include(a => a.Service)
+                .ToList();
             return View(userAppointments);
         }
 
@@ -90,7 +103,7 @@ namespace GroomMate.Controllers
                 ServiceID = serviceId,
                 UserID = userId,
                 AppointmentDate = appointmentDate,
-                Status = "Pending" // Always starts as Pending
+                Status = "Pending"
             };
             db.Appointments.Add(appointment);
             db.SaveChanges();

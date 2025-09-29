@@ -2,6 +2,15 @@
 @{ ViewBag.Title = "Admin Dashboard"; Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 <h3>All Appointments</h3>
+
+@* CORRECTED: Displays error if staff is not selected *@
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
 <a href="@Url.Action("Logout", "Account")" class="btn btn-secondary mb-3">Logout</a>
 
 <table class="table table-striped table-hover">
@@ -19,19 +28,16 @@
         @foreach (var appt in Model)
         {
             <tr>
-                <td>@appt.User.FullName</td>
-                <td>@appt.Service.ServiceName</td>
+                <td>
+                    @(appt.User?.FullName ?? "User Not Found")
+                </td>
+                <td>
+                    @(appt.Service?.ServiceName ?? "Service Not Found")
+                </td>
                 <td>@appt.AppointmentDate.ToString("dd-MM-yyyy hh:mm tt")</td>
                 <td><span class="badge bg-info text-dark">@appt.Status</span></td>
                 <td>
-                    @if (appt.StaffId != null)
-                    {
-                        @appt.Staff.FullName
-                    }
-                    else
-                    {
-                        <span class="text-danger">Unassigned</span>
-                    }
+                    @Html.Raw(appt.Staff?.FullName ?? "<span class='text-danger'>Unassigned</span>")
                 </td>
                 <td>
                     @if (appt.Status == "Pending")
