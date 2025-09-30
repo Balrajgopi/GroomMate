@@ -1,33 +1,51 @@
 ﻿@model IEnumerable<GroomMate.Models.Appointment>
-@{ ViewBag.Title = "Staff Dashboard"; Layout = "~/Views/Shared/_Layout.cshtml"; }
 
-<h3>My Assigned Appointments</h3>
-<a href="@Url.Action("Logout", "Account")" class="btn btn-secondary mb-3">Logout</a>
+@{
+    ViewBag.Title = "My Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<table class="table table-striped">
-    <thead class="table-light">
-        <tr>
-            <th>Customer</th>
-            <th>Service</th>
-            <th>Date</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var appt in Model)
-        {
+<h2>My Assigned Appointments</h2>
+<p>Here are the appointments that have been assigned to you.</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info" role="alert">
+        You have no appointments assigned to you at this time.
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>
-                    @* SAFE CODE: Prevents crash if User is missing *@
-                    @(appt.User?.FullName ?? "User Not Found")
-                </td>
-                <td>
-                    @* SAFE CODE: Prevents crash if Service is missing *@
-                    @(appt.Service?.ServiceName ?? "Service Not Found")
-                </td>
-                <td>@appt.AppointmentDate.ToString("dd-MM-yyyy hh:mm tt")</td>
-                <td><span class="badge bg-success">@appt.Status</span></td>
+                <th>Customer Name</th>
+                <th>Service</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var appt in Model)
+            {
+                <tr>
+                    <td>@appt.User.FullName</td>
+                    <td>@appt.Service.ServiceName</td>
+                    <td>@appt.AppointmentDate.ToString("f")</td>
+                    <td><span class="badge bg-primary">@appt.Status</span></td>
+                    <td>
+                        @if (appt.Status == "Confirmed")
+                        {
+                            using (Html.BeginForm("CompleteAppointment", "Staff", new { id = appt.AppointmentID }, FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-success">Mark as Complete</button>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

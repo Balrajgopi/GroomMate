@@ -125,23 +125,19 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AppointmentController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
+    <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202509291020397_InitialSetup.cs" />
-    <Compile Include="Migrations\202509291020397_InitialSetup.Designer.cs">
-      <DependentUpon>202509291020397_InitialSetup.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202509291311566_AddStaffIdToAppointment.cs" />
-    <Compile Include="Migrations\202509291311566_AddStaffIdToAppointment.Designer.cs">
-      <DependentUpon>202509291311566_AddStaffIdToAppointment.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202509291447092_AddIsDeletedToUser.cs" />
-    <Compile Include="Migrations\202509291447092_AddIsDeletedToUser.Designer.cs">
-      <DependentUpon>202509291447092_AddIsDeletedToUser.cs</DependentUpon>
+    <Compile Include="Migrations\202509300111149_InitialCreate.cs" />
+    <Compile Include="Migrations\202509300111149_InitialCreate.Designer.cs">
+      <DependentUpon>202509300111149_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Appointment.cs" />
@@ -170,6 +166,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Site-Custom.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -213,9 +210,14 @@
     <Content Include="Views\Feedback\ThankYou.cshtml" />
     <Content Include="Views\Feedback\AlreadySubmitted.cshtml" />
     <Content Include="Views\Dashboard\AdminDashboard.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Service\Index.cshtml" />
+    <Content Include="Views\Appointment\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Admin\" />
+    <Folder Include="Views\Staff\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -245,14 +247,8 @@
     <Content Include="Scripts\jquery-3.7.0.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202509291020397_InitialSetup.resx">
-      <DependentUpon>202509291020397_InitialSetup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202509291311566_AddStaffIdToAppointment.resx">
-      <DependentUpon>202509291311566_AddStaffIdToAppointment.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202509291447092_AddIsDeletedToUser.resx">
-      <DependentUpon>202509291447092_AddIsDeletedToUser.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202509300111149_InitialCreate.resx">
+      <DependentUpon>202509300111149_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

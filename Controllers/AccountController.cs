@@ -1,16 +1,17 @@
 ﻿using GroomMate.Models;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Security;
+using System.Web.Security; // Required for FormsAuthentication
 
 namespace GroomMate.Controllers
 {
     public class AccountController : Controller
     {
-        // Make the DbContext field readonly for safety and clarity.
         private readonly GroomMateContext db = new GroomMateContext();
 
         // GET: Account/Register
+        [HttpGet]
         public ActionResult Register()
         {
             return View();
@@ -18,91 +19,106 @@ namespace GroomMate.Controllers
 
         // POST: Account/Register
         [HttpPost]
-        public ActionResult Register(string fullName, string email, string username, string password, string confirmPassword)
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(User user)
         {
-            if (password != confirmPassword)
+            if (ModelState.IsValid)
             {
-                ViewBag.Error = "Passwords do not match.";
-                return View();
+                if (db.Users.Any(u => u.Username.Equals(user.Username, System.StringComparison.OrdinalIgnoreCase)))
+                {
+                    ModelState.AddModelError("Username", "This username is already taken.");
+                    return View(user);
+                }
+
+                var customerRole = db.Roles.FirstOrDefault(r => r.RoleName == "Customer");
+                if (customerRole == null)
+                {
+                    ModelState.AddModelError("", "A system configuration error occurred.");
+                    return View(user);
+                }
+
+                user.RoleID = customerRole.RoleID;
+                user.IsDeleted = false;
+
+                db.Users.Add(user);
+                db.SaveChanges();
+
+                return RedirectToAction("Login", "Account");
             }
-            if (db.Users.Any(u => u.Username == username))
-            {
-                ViewBag.Error = "Username already exists.";
-                return View();
-            }
-
-            // Use FirstOrDefault for a safer query. It returns null if not found.
-            var customerRole = db.Roles.FirstOrDefault(r => r.RoleName == "Customer");
-
-            // Add a check to ensure the role exists. This gives a better error if seeding fails.
-            if (customerRole == null)
-            {
-                ViewBag.Error = "A critical error occurred: The 'Customer' role is not configured in the database.";
-                return View();
-            }
-
-            var user = new User
-            {
-                FullName = fullName,
-                Email = email,
-                Username = username,
-                Password = password, // Warning: Storing plain-text passwords is a major security risk.
-                RoleID = customerRole.RoleID
-            };
-
-            db.Users.Add(user);
-            db.SaveChanges();
-
-            FormsAuthentication.SetAuthCookie(username, false);
-            Session["UserID"] = user.UserID;
-            Session["Role"] = "Customer";
-
-            return RedirectToAction("CustomerDashboard", "Dashboard");
+            return View(user);
         }
 
+        // *** START: NEW LOGIN/LOGOUT ACTIONS ***
+
         // GET: Account/Login
-        public ActionResult Login()
+        [HttpGet]
+        public ActionResult Login(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         // POST: Account/Login
         [HttpPost]
-        public ActionResult Login(string username, string password)
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            // The .Include("Role") eagerly loads the related Role data.
-            var user = db.Users.Include("Role").FirstOrDefault(u => u.Username == username && u.Password == password);
-
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                FormsAuthentication.SetAuthCookie(user.Username, false);
-                Session["UserID"] = user.UserID;
-                Session["Role"] = user.Role.RoleName;
+                // Find the user in the database
+                var user = db.Users.Include(u => u.Role) // Eagerly load the Role
+                                   .FirstOrDefault(u => u.Username.Equals(model.Username, System.StringComparison.OrdinalIgnoreCase)
+                                                      && u.Password == model.Password && !u.IsDeleted);
 
-                switch (user.Role.RoleName)
+                if (user != null)
                 {
-                    case "Admin":
-                        return RedirectToAction("AdminDashboard", "Dashboard");
-                    case "Staff":
-                        return RedirectToAction("StaffDashboard", "Dashboard");
-                    case "Customer":
-                        return RedirectToAction("CustomerDashboard", "Dashboard");
+                    // Set authentication cookie
+                    FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
+
+                    // Store user details in session for easy access
+                    Session["UserID"] = user.UserID;
+                    Session["Username"] = user.Username;
+                    Session["Role"] = user.Role.RoleName;
+
+                    // Redirect to the originally requested page, or a dashboard
+                    if (Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+
+                    // Redirect based on user role
+                    switch (user.Role.RoleName)
+                    {
+                        case "Admin":
+                            return RedirectToAction("AdminDashboard", "Dashboard");
+                        case "Staff":
+                            return RedirectToAction("StaffDashboard", "Dashboard");
+                        default: // Customer
+                            return RedirectToAction("CustomerDashboard", "Dashboard");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid username or password.");
                 }
             }
 
-            ViewBag.ErrorMessage = "Invalid username or password.";
-            return View();
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
 
-        // GET: Account/Logout
+        // POST: /Account/Logout
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            Session.Clear();
-            return RedirectToAction("Login");
+            Session.Abandon(); // Clears the session
+            return RedirectToAction("Index", "Home");
         }
 
-        // Add the Dispose method to properly release database connection resources.
+        // *** END: NEW LOGIN/LOGOUT ACTIONS ***
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -111,5 +127,13 @@ namespace GroomMate.Controllers
             }
             base.Dispose(disposing);
         }
+    }
+
+    // A simple ViewModel for the login page
+    public class LoginViewModel
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public bool RememberMe { get; set; }
     }
 }

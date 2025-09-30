@@ -7,7 +7,8 @@ namespace GroomMate.Controllers
     [Authorize]
     public class FeedbackController : Controller
     {
-        private GroomMateContext db = new GroomMateContext();
+        // BEST PRACTICE: Mark the DbContext as readonly.
+        private readonly GroomMateContext db = new GroomMateContext();
 
         public ActionResult Submit(int appointmentId)
         {
@@ -40,5 +41,15 @@ namespace GroomMate.Controllers
 
         public ActionResult ThankYou() => View();
         public ActionResult AlreadySubmitted() => View();
+
+        // BEST PRACTICE: Dispose the DbContext to release database connections.
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

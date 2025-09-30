@@ -1,8 +1,7 @@
 ﻿using GroomMate.Models;
-using System;
-using System.Web.Mvc;
 using System.Data.Entity;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace GroomMate.Controllers
 {
@@ -11,103 +10,69 @@ namespace GroomMate.Controllers
     {
         private readonly GroomMateContext db = new GroomMateContext();
 
-        // FOR ADMIN
+        // GET: Dashboard/AdminDashboard
         [Authorize(Roles = "Admin")]
         public ActionResult AdminDashboard()
         {
-            var allAppointments = db.Appointments
+            var appointments = db.Appointments
                 .Include(a => a.User)
                 .Include(a => a.Service)
                 .Include(a => a.Staff)
+                .OrderByDescending(a => a.AppointmentDate)
                 .ToList();
 
-            // --- UPDATED LOGIC ---
-            // Filters the staff list to only include users who are not marked as deleted.
-            ViewBag.StaffList = new SelectList(db.Users.Where(u => u.Role.RoleName == "Staff" && !u.IsDeleted), "UserID", "FullName");
+            ViewBag.StaffList = db.Users
+                .Where(u => u.Role.RoleName == "Staff" && !u.IsDeleted)
+                .Select(u => new SelectListItem
+                {
+                    Value = u.UserID.ToString(),
+                    Text = u.FullName
+                }).ToList();
 
-            return View(allAppointments);
+            return View(appointments);
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public ActionResult AssignStaff(int appointmentId, int? staffId)
-        {
-            if (staffId == null)
-            {
-                TempData["ErrorMessage"] = "Please select a staff member to assign.";
-                return RedirectToAction("AdminDashboard");
-            }
-
-            var appointment = db.Appointments.Find(appointmentId);
-            if (appointment != null)
-            {
-                appointment.StaffId = staffId.Value;
-                appointment.Status = "Confirmed";
-                db.SaveChanges();
-            }
-            return RedirectToAction("AdminDashboard");
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public ActionResult MarkAsCompleted(int appointmentId)
-        {
-            var appointment = db.Appointments.Find(appointmentId);
-            if (appointment != null && appointment.Status == "Confirmed")
-            {
-                appointment.Status = "Completed";
-                db.SaveChanges();
-            }
-            return RedirectToAction("AdminDashboard");
-        }
-
-        // FOR STAFF
+        // GET: Dashboard/StaffDashboard
         [Authorize(Roles = "Staff")]
         public ActionResult StaffDashboard()
         {
-            int staffId = (int)Session["UserID"];
-            var assignedAppointments = db.Appointments
-                .Where(a => a.StaffId == staffId && a.Status == "Confirmed")
-                .Include(a => a.Service)
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int currentStaffId = (int)Session["UserID"];
+            var staffAppointments = db.Appointments
+                .Where(a => a.StaffId == currentStaffId)
                 .Include(a => a.User)
+                .Include(a => a.Service)
+                .OrderByDescending(a => a.AppointmentDate)
                 .ToList();
-            return View(assignedAppointments);
+
+            return View(staffAppointments);
         }
 
-        // FOR CUSTOMER
+        // *** THIS IS THE NEW ACTION TO FIX THE 404 ERROR ***
+        // GET: Dashboard/CustomerDashboard
         [Authorize(Roles = "Customer")]
         public ActionResult CustomerDashboard()
         {
-            var services = db.Services.ToList();
-            return View(services);
-        }
-
-        [Authorize(Roles = "Customer")]
-        public ActionResult ViewAppointments()
-        {
-            int userId = (int)Session["UserID"];
-            var userAppointments = db.Appointments
-                .Where(a => a.UserID == userId)
-                .Include(a => a.Service)
-                .ToList();
-            return View(userAppointments);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Customer")]
-        public ActionResult BookAppointment(int serviceId, DateTime appointmentDate)
-        {
-            int userId = (int)Session["UserID"];
-            var appointment = new Appointment
+            if (Session["UserID"] == null)
             {
-                ServiceID = serviceId,
-                UserID = userId,
-                AppointmentDate = appointmentDate,
-                Status = "Pending"
-            };
-            db.Appointments.Add(appointment);
-            db.SaveChanges();
-            return RedirectToAction("ViewAppointments");
+                return RedirectToAction("Login", "Account");
+            }
+
+            int currentUserId = (int)Session["UserID"];
+
+            // Fetch all appointments for the currently logged-in customer
+            var customerAppointments = db.Appointments
+                .Where(a => a.UserID == currentUserId)
+                .Include(a => a.Service)
+                .Include(a => a.Staff) // Include staff details
+                .OrderByDescending(a => a.AppointmentDate)
+                .ToList();
+
+            return View(customerAppointments);
         }
 
         protected override void Dispose(bool disposing)

@@ -7,13 +7,13 @@ namespace GroomMate.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.5.1")]
-    public sealed partial class AddIsDeletedToUser : IMigrationMetadata
+    public sealed partial class InitialCreate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddIsDeletedToUser));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
         
         string IMigrationMetadata.Id
         {
-            get { return "202509291447092_AddIsDeletedToUser"; }
+            get { return "202509300111149_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

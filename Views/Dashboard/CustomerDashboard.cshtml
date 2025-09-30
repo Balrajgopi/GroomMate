@@ -1,30 +1,68 @@
-﻿@model List<GroomMate.Models.Service>
-@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+﻿@model IEnumerable<GroomMate.Models.Appointment>
 
-<h3>Our Services</h3>
-<a href="@Url.Action("ViewAppointments", "Dashboard")" class="btn btn-info mb-3">View My Appointments</a>
-<a href="@Url.Action("Logout", "Account")" class="btn btn-secondary mb-3">Logout</a>
+@{
+    ViewBag.Title = "My Appointments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<table class="table">
-    <thead>
-        <tr><th>Name</th><th>Description</th><th>Price</th><th>Action</th></tr>
-    </thead>
-    <tbody>
-        @foreach (var service in Model)
-        {
+<h2>My Appointments</h2>
+<p>Here is a history of your upcoming and past appointments. You can book a new one at any time!</p>
+
+<p>
+    @Html.ActionLink("Book New Appointment", "Index", "Service", null, new { @class = "btn btn-primary" })
+</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info mt-4" role="alert">
+        You have not booked any appointments yet. Click the button above to get started.
+    </div>
+}
+else
+{
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
             <tr>
-                <td>@service.ServiceName</td>
-                <td>@service.Description</td>
-                <td>@service.Price.ToString("C")</td>
-                <td>
-                    @using (Html.BeginForm("BookAppointment", "Dashboard", FormMethod.Post))
-                    {
-                        <input type="hidden" name="serviceId" value="@service.ServiceID" />
-                        <input type="datetime-local" name="appointmentDate" required />
-                        <button type="submit" class="btn btn-sm btn-success">Book</button>
-                    }
-                </td>
+                <th>Service</th>
+                <th>Date & Time</th>
+                <th>Assigned Staff</th>
+                <th>Status</th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var appt in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => appt.Service.ServiceName)</td>
+                    <td>@appt.AppointmentDate.ToString("g")</td>
+                    <td>@(appt.Staff?.FullName ?? "Pending Assignment")</td>
+                    <td>
+                        @if (appt.Status == "Completed")
+                        {
+                            <span class="badge bg-success">Completed</span>
+                        }
+                        else if (appt.Status == "Confirmed")
+                        {
+                            <span class="badge bg-info text-dark">Confirmed</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">@appt.Status</span>
+                        }
+                    </td>
+                    <td>
+                        @if (appt.Status == "Completed" && appt.Feedback == null)
+                        {
+                            @Html.ActionLink("Leave Feedback", "Submit", "Feedback", new { appointmentId = appt.AppointmentID }, new { @class = "btn btn-outline-primary btn-sm" })
+                        }
+                        else if (appt.Feedback != null)
+                        {
+                            <span class="text-muted fst-italic">Feedback Sent</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
