@@ -4,22 +4,32 @@
 
 <div class="jumbotron">
     <h1>Welcome to GroomMate</h1>
-    <p class="lead">Style, simplified. GroomMate is your modern solution for booking grooming appointments online. Say goodbye to waiting on the phone and hello to effortless scheduling.</p>
-    <p><a href="@Url.Action("Login", "Account","Views")" class="btn btn-primary btn-lg">Book Now &raquo;</a></p>
+    <p class="lead">
+        Style, simplified. GroomMate is your modern solution for booking grooming appointments online.
+        Say goodbye to waiting on the phone and hello to effortless scheduling.
+    </p>
+    <!-- Center Book Now button removed as requested -->
 </div>
 
 <div class="row">
     <div class="col-md-4">
         <h2>Easy Booking</h2>
         <p>
-            Browse our services, pick your favorite stylist, and choose a time that works for you. Your next fresh look is just a few clicks away.
+            Browse our services, pick your favorite stylist, and choose a time that works for you.
+            Your next fresh look is just a few clicks away.
         </p>
     </div>
 
     <div class="col-md-4">
         <h2>Manage Your Time</h2>
         <p>
-            View your upcoming and past appointments through your personal dashboard. Rescheduling or canceling is simple and hassle-free.
+            View your upcoming and past appointments through your personal dashboard.
+            Rescheduling or canceling is simple and hassle-free.
         </p>
     </div>
 </div>
+
+@* If you need page-specific scripts, place them in this optional section so the layout can render them near the end *@
+@section scripts {
+    @* add page-specific scripts here if needed *@
+}
