@@ -16,7 +16,7 @@
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">@service.ServiceName</h5>
                     <p class="card-text">@service.Description</p>
-                    <p class="card-text"><strong>Price:</strong> @service.Price.ToString("C")</p>
+                    <p class="card-text"><strong>Price:</strong> ₹ @service.Price.ToString("N2")</p>
 
                     @* --- THIS IS THE NEW LINE FOR PAYMENT INFO --- *@
                     <p class="card-text text-muted"><small>Payment: In Cash at Salon</small></p>
