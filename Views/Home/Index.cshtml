@@ -1,35 +1,66 @@
-﻿@{
+@{
     ViewBag.Title = "Home";
 }
 
-<div class="jumbotron">
-    <h1>Welcome to GroomMate</h1>
-    <p class="lead">
-        Style, simplified. GroomMate is your modern solution for booking grooming appointments online.
-        Say goodbye to waiting on the phone and hello to effortless scheduling.
-    </p>
-    <!-- Center Book Now button removed as requested -->
-</div>
-
-<div class="row">
-    <div class="col-md-4">
-        <h2>Easy Booking</h2>
-        <p>
-            Browse our services, pick your favorite stylist, and choose a time that works for you.
-            Your next fresh look is just a few clicks away.
-        </p>
+<div class="container py-4">
+    <!-- Hero Section (No central CTA button as per project requirements) -->
+    <div class="hero-section text-center text-sm-start d-flex align-items-center">
+        <div class="py-5 px-sm-3 col-lg-8">
+            <span class="text-warning text-uppercase fw-bold letter-spacing-2 d-block mb-3" style="font-size: 0.9rem;">Modern Grooming For Gentlemen</span>
+            <h1 class="hero-title playfair-font text-white">Welcome to GroomMate</h1>
+            <p class="hero-subtitle text-muted">
+                Style, simplified. GroomMate is your premium online platform for booking salon services. 
+                Skip the wait, view operating hours, and schedule your appointment effortlessly.
+            </p>
+        </div>
     </div>
 
-    <div class="col-md-4">
-        <h2>Manage Your Time</h2>
-        <p>
-            View your upcoming and past appointments through your personal dashboard.
-            Rescheduling or canceling is simple and hassle-free.
-        </p>
+    <!-- Features Section -->
+    <div class="text-center mb-5 mt-5">
+        <h2 class="playfair-font mb-2">Designed For The Modern Man</h2>
+        <p class="text-muted col-md-6 mx-auto">Experience a seamless bridge between premium barbershop craftsmanship and effortless online management.</p>
+        <div class="mx-auto bg-warning" style="width: 50px; height: 2px; border-radius: 1px;"></div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card border-0 h-100 p-4 text-center">
+                <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded-circle mb-4 mx-auto" style="width: 60px; height: 60px;">
+                    <i class="bi bi-calendar2-check fs-3"></i>
+                </div>
+                <h4 class="playfair-font mb-3">Easy Booking</h4>
+                <p class="text-muted mb-0" style="font-size: 0.9rem; line-height: 1.6;">
+                    Browse our grooming catalog, choose your favorite services, and select a time slot that matches your schedule in just a few clicks.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 h-100 p-4 text-center">
+                <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded-circle mb-4 mx-auto" style="width: 60px; height: 60px;">
+                    <i class="bi bi-speedometer2 fs-3"></i>
+                </div>
+                <h4 class="playfair-font mb-3">Manage Your Time</h4>
+                <p class="text-muted mb-0" style="font-size: 0.9rem; line-height: 1.6;">
+                    Keep track of your bookings through your personal dashboard. Cancel or view status updates directly without making phone calls.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 h-100 p-4 text-center">
+                <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded-circle mb-4 mx-auto" style="width: 60px; height: 60px;">
+                    <i class="bi bi-scissors fs-3"></i>
+                </div>
+                <h4 class="playfair-font mb-3">Premium Styling</h4>
+                <p class="text-muted mb-0" style="font-size: 0.9rem; line-height: 1.6;">
+                    Our certified styling professionals are equipped with high-end tools to deliver custom haircuts, beard trims, and skin treatments.
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 
-@* If you need page-specific scripts, place them in this optional section so the layout can render them near the end *@
 @section scripts {
-    @* add page-specific scripts here if needed *@
+    @* page-specific scripts here if needed *@
 }

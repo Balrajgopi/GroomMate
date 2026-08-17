@@ -1,31 +1,68 @@
-﻿@model IEnumerable<GroomMate.Models.Service>
+@model IEnumerable<GroomMate.Models.Service>
 
 @{
     ViewBag.Title = "Our Services";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Choose a Service</h2>
-<p>Select one of our services below to book your appointment.</p>
+<div class="container py-4">
+    <div class="text-center mb-5">
+        <span class="text-warning text-uppercase fw-bold letter-spacing-1 d-block mb-2">Treat Yourself</span>
+        <h2 class="display-5 mb-3 playfair-font">Choose a Grooming Service</h2>
+        <p class="text-muted col-md-6 mx-auto">Select one of our premium services below to schedule your appointment with Ulhasnagar's finest grooming professionals.</p>
+        <div class="mx-auto bg-warning" style="width: 60px; height: 3px; border-radius: 2px;"></div>
+    </div>
 
-<div class="row">
-    @foreach (var service in Model)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">@service.ServiceName</h5>
-                    <p class="card-text">@service.Description</p>
-                    <p class="card-text"><strong>Price:</strong> ₹ @service.Price.ToString("N2")</p>
+    <div class="row g-4 justify-content-center">
+        @foreach (var service in Model)
+        {
+            string iconClass = "bi-scissors";
+            string nameLower = service.ServiceName.ToLower();
+            if (nameLower.Contains("haircut") || nameLower.Contains("hair cut"))
+            {
+                iconClass = "bi-scissors";
+            }
+            else if (nameLower.Contains("beard") || nameLower.Contains("trim"))
+            {
+                iconClass = "bi-brush";
+            }
+            else if (nameLower.Contains("shave") || nameLower.Contains("shaving"))
+            {
+                iconClass = "bi-droplet-half";
+            }
+            else if (nameLower.Contains("facial") || nameLower.Contains("massage") || nameLower.Contains("spa"))
+            {
+                iconClass = "bi-magic";
+            }
+            else if (nameLower.Contains("combo") || nameLower.Contains("package") || nameLower.Contains("all"))
+            {
+                iconClass = "bi-gem";
+            }
 
-                    @* --- THIS IS THE NEW LINE FOR PAYMENT INFO --- *@
-                    <p class="card-text text-muted"><small>Payment: In Cash at Salon</small></p>
-
-                    <div class="mt-auto">
-                        @Html.ActionLink("Book Now", "Create", "Appointment", new { serviceId = service.ServiceID }, new { @class = "btn btn-success" })
+            <div class="col-md-4 col-sm-6">
+                <div class="card h-100 border-0 p-4">
+                    <div class="card-body d-flex flex-column p-0">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="d-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded-circle" style="width: 50px; height: 50px;">
+                                <i class="bi @iconClass fs-4"></i>
+                            </div>
+                            <span class="price-tag">₹ @service.Price.ToString("N0")</span>
+                        </div>
+                        
+                        <h5 class="card-title mb-2">@service.ServiceName</h5>
+                        <p class="card-text text-muted flex-grow-1" style="font-size: 0.9rem; line-height: 1.6;">@service.Description</p>
+                        
+                        <hr class="my-3 text-black-50 opacity-10">
+                        
+                        <div class="d-flex align-items-center justify-content-between align-self-stretch mt-auto">
+                            <span class="text-muted d-flex align-items-center" style="font-size: 0.8rem;">
+                                <i class="bi bi-wallet2 me-1"></i> Cash at Salon
+                            </span>
+                            @Html.ActionLink("Book Now", "Create", "Appointment", new { serviceId = service.ServiceID }, new { @class = "btn btn-book-now btn-sm px-4" })
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
