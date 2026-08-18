@@ -35,7 +35,10 @@
                         @Html.LabelFor(m => m.Password, new { @class = "form-label text-dark" })
                         <div class="input-group">
                             <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-lock"></i></span>
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control border-start-0 ps-0", placeholder = "Enter your password" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control border-start-0 border-end-0 ps-0", id = "loginPasswordInput", placeholder = "Enter your password" })
+                            <button class="btn btn-outline-secondary border-start-0 bg-light text-muted" type="button" id="toggleLoginPasswordBtn" onclick="togglePasswordVisibility('loginPasswordInput', 'toggleLoginPasswordIcon')" title="Show/Hide Password">
+                                <i class="bi bi-eye" id="toggleLoginPasswordIcon"></i>
+                            </button>
                         </div>
                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger mt-1 d-block", style = "font-size: 0.8rem;" })
                     </div>
@@ -61,4 +64,19 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function togglePasswordVisibility(inputId, iconId) {
+            var input = document.getElementById(inputId);
+            var icon = document.getElementById(iconId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("bi-eye");
+                icon.classList.add("bi-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("bi-eye-slash");
+                icon.classList.add("bi-eye");
+            }
+        }
+    </script>
 }

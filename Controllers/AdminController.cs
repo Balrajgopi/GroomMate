@@ -1,4 +1,4 @@
-﻿using GroomMate.Models;
+ using GroomMate.Models;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -35,6 +35,9 @@ namespace GroomMate.Controllers
             appointment.StaffId = staffId;
             db.SaveChanges();
 
+            // Send email notification to customer about staff assignment
+            GroomMate.Security.EmailService.SendAppointmentNotification(appointment.AppointmentID, "Assigned");
+
             // Redirect back to the Admin Dashboard to see the change
             return RedirectToAction("AdminDashboard", "Dashboard");
         }
@@ -53,6 +56,9 @@ namespace GroomMate.Controllers
             // Change the status and save
             appointment.Status = "Confirmed";
             db.SaveChanges();
+
+            // Send email notification to customer about confirmation
+            GroomMate.Security.EmailService.SendAppointmentNotification(appointment.AppointmentID, "Confirmed");
 
             return RedirectToAction("AdminDashboard", "Dashboard");
         }

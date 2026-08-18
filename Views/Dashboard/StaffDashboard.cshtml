@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GroomMate.Models.Appointment>
+@model IEnumerable<GroomMate.Models.Appointment>
 
 @{
     ViewBag.Title = "My Dashboard";
@@ -7,6 +7,14 @@
 
 <h2>My Assigned Appointments</h2>
 <p>Here are the appointments that have been assigned to you.</p>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
 @if (!Model.Any())
 {
@@ -37,10 +45,17 @@ else
                     <td>
                         @if (appt.Status == "Confirmed")
                         {
-                            using (Html.BeginForm("CompleteAppointment", "Staff", new { id = appt.AppointmentID }, FormMethod.Post))
+                            if (appt.AppointmentDate <= DateTime.Now)
                             {
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-sm btn-outline-success">Mark as Complete</button>
+                                using (Html.BeginForm("CompleteAppointment", "Staff", new { id = appt.AppointmentID }, FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-success">Mark as Complete</button>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted small"><i class="bi bi-hourglass-split me-1"></i>Upcoming (cannot complete yet)</span>
                             }
                         }
                     </td>

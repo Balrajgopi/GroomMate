@@ -1,4 +1,4 @@
-﻿using GroomMate.Models;
+using GroomMate.Models;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -32,9 +32,19 @@ namespace GroomMate.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            // Prevent completing future appointments
+            if (appointment.AppointmentDate > System.DateTime.Now)
+            {
+                TempData["ErrorMessage"] = "Cannot complete an appointment that is scheduled in the future.";
+                return RedirectToAction("StaffDashboard", "Dashboard");
+            }
+
             // Update the status of the appointment
             appointment.Status = "Completed";
             db.SaveChanges();
+
+            // Send email notification to customer about completion
+            GroomMate.Security.EmailService.SendAppointmentNotification(appointment.AppointmentID, "Completed");
 
             // Redirect the user back to their dashboard to see the updated list
             return RedirectToAction("StaffDashboard", "Dashboard");

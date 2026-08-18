@@ -1,4 +1,4 @@
-﻿using GroomMate.Models;
+using GroomMate.Models;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -28,6 +28,12 @@ namespace GroomMate.Controllers
                     Value = u.UserID.ToString(),
                     Text = u.FullName
                 }).ToList();
+
+            // Fetch all customer feedbacks eagerly loading the appointment, customer, and service details
+            ViewBag.Feedbacks = db.Feedbacks
+                .Include(f => f.Appointment.User)
+                .Include(f => f.Appointment.Service)
+                .ToList();
 
             return View(appointments);
         }

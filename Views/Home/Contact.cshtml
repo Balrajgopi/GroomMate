@@ -1,31 +1,119 @@
-﻿@{
-    ViewBag.Title = "Contact";
+@{
+    ViewBag.Title = "Contact Us";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>We'd love to hear from you.</h3>
 
-<hr />
+<div class="container py-5">
+    @* {{-- Header Banner --}} *@
+    <div class="text-center mb-5">
+        <span class="text-warning text-uppercase fw-bold letter-spacing-1 d-block mb-2" style="font-size: 0.8rem; letter-spacing: 2px;">Get In Touch</span>
+        <h1 class="playfair-font display-4 mb-3">We'd Love to Hear From You</h1>
+        <p class="text-muted col-md-6 mx-auto" style="line-height: 1.8;">
+            Have questions about our grooming services, appointment slots, or special packages? Contact GroomMate today or visit our Ulhasnagar salon.
+        </p>
+        <div class="mx-auto bg-warning" style="width: 60px; height: 3px; border-radius: 2px;"></div>
+    </div>
 
-<address>
-    <strong>GroomMate Salon</strong><br />
-    Veer Savarkar Chowk Oppo Kohinoor Plaza,<br /> 
-    Near RLY Station Ulhasnagar East<br />
-    Mumbai, MH 421004<br />
-    <abbr title="Phone">PHONE NUMBER:</abbr>
-    1234567890
-</address>
+    <div class="row g-4 mb-5">
+        @* {{-- Phone Card --}} *@
+        <div class="col-md-4">
+            <div class="card border-0 p-4 h-100 text-center" style="border-radius: 16px; border: 1px solid #e2e8f0; background: #ffffff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: transform 0.3s ease;">
+                <div class="d-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded-circle mx-auto mb-3" style="width: 60px; height: 60px;">
+                    <i class="bi bi-telephone-fill fs-3"></i>
+                </div>
+                <h5 class="playfair-font fw-bold mb-2">Phone & WhatsApp</h5>
+                <p class="text-muted" style="font-size: 0.88rem;">Call us directly or send a WhatsApp message for instant queries.</p>
+                <div class="mt-auto pt-3 border-top">
+                    <a href="tel:8087809053" class="btn btn-warning rounded-pill px-4 fw-bold text-dark w-100 mb-2">
+                        <i class="bi bi-telephone-out me-2"></i>+91 8087809053
+                    </a>
+                    <a href="https://wa.me/918087809053?text=Hi%20GroomMate%2C%20I%20have%20a%20query%20about%20booking%20an%20appointment." target="_blank" class="btn btn-outline-success rounded-pill px-4 w-100" style="font-size: 0.85rem;">
+                        <i class="bi bi-whatsapp me-2"></i>WhatsApp Chat
+                    </a>
+                </div>
+            </div>
+        </div>
 
-<address>
-    <strong>Support & Bookings:</strong><br />
-    <a href="mailto:contact@groommate.com">contact@groommate.com</a>
-</address>
+        @* {{-- Location Card --}} *@
+        <div class="col-md-4">
+            <div class="card border-0 p-4 h-100 text-center" style="border-radius: 16px; border: 1px solid #e2e8f0; background: #ffffff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: transform 0.3s ease;">
+                <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3" style="width: 60px; height: 60px;">
+                    <i class="bi bi-geo-alt-fill fs-3"></i>
+                </div>
+                <h5 class="playfair-font fw-bold mb-2">Salon Address</h5>
+                <p class="text-muted mb-1" style="font-size: 0.88rem;">
+                    <strong>GroomMate Salon</strong><br/>
+                    Veer Savarkar Chowk, Opp. Kohinoor Plaza,<br/>
+                    Near RLY Station, Ulhasnagar East,<br/>
+                    Mumbai, MH 421004
+                </p>
+                <div class="mt-auto pt-3 border-top">
+                    <a href="https://maps.google.com/?q=Veer+Savarkar+Chowk+Ulhasnagar+East" target="_blank" class="btn btn-outline-primary rounded-pill px-4 w-100" style="font-size: 0.85rem;">
+                        <i class="bi bi-map-fill me-2"></i>Open in Google Maps
+                    </a>
+                </div>
+            </div>
+        </div>
 
-<hr />
+        @* {{-- Email & Hours Card --}} *@
+        <div class="col-md-4">
+            <div class="card border-0 p-4 h-100 text-center" style="border-radius: 16px; border: 1px solid #e2e8f0; background: #ffffff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: transform 0.3s ease;">
+                <div class="d-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-3" style="width: 60px; height: 60px;">
+                    <i class="bi bi-clock-history fs-3"></i>
+                </div>
+                <h5 class="playfair-font fw-bold mb-2">Working Hours</h5>
+                <div class="text-start p-3 rounded-3 mb-3" style="background: #f8fafc; font-size: 0.84rem;">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-semibold">Mon, Wed - Sun:</span>
+                        <span class="text-dark">9:00 AM &ndash; 10:00 PM</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center text-danger fw-bold">
+                        <span>Tuesday:</span>
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-3 py-1">CLOSED</span>
+                    </div>
+                </div>
+                <div class="mt-auto pt-2 border-top">
+                    <a href="mailto:Balrajgopi0000@gmail.com" class="text-decoration-none text-muted" style="font-size: 0.82rem;">
+                        <i class="bi bi-envelope-fill text-warning me-1"></i>Balrajgopi0000@gmail.com
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<h4><strong>Business Hours</strong></h4>
-<p>
-    Monday - Friday: 9:00 AM - 10:00 PM<br />
-    Saturday: 8:00 AM - 9:00 PM<br />
-    Sunday: 10:00 AM - 6:00 PM<br />
-    Tuesday: Closed
-</p>
+    @* {{-- Interactive Direct Message Card --}} *@
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 p-4 p-md-5" style="border-radius: 20px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white;">
+                <div class="row align-items-center g-4">
+                    <div class="col-md-6">
+                        <span class="text-warning text-uppercase fw-bold d-block mb-2" style="font-size: 0.78rem; letter-spacing: 1.5px;">Need Assistance?</span>
+                        <h3 class="playfair-font mb-3">Book Your Slot Or Talk To Us</h3>
+                        <p class="text-light opacity-75 mb-4" style="font-size: 0.9rem; line-height: 1.7;">
+                            Our expert grooming stylists are ready to give you the ultimate haircut, beard trim, or face massage experience.
+                        </p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <a href="tel:8087809053" class="btn btn-warning rounded-pill px-4 py-2 text-dark fw-bold">
+                                <i class="bi bi-telephone-fill me-2"></i>Call 8087809053
+                            </a>
+                            <a href="@Url.Action("Index", "Service")" class="btn btn-outline-light rounded-pill px-4 py-2">
+                                <i class="bi bi-scissors me-2"></i>Browse Services
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-4 rounded-4" style="background: rgba(255,255,255,0.06); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                            <h5 class="fw-bold mb-3 text-warning"><i class="bi bi-info-circle me-2"></i>Quick Info Summary</h5>
+                            <ul class="list-unstyled mb-0 text-light opacity-90" style="font-size: 0.88rem; line-height: 2;">
+                                <li><i class="bi bi-check-circle-fill text-warning me-2"></i><strong>Phone:</strong> +91 8087809053</li>
+                                <li><i class="bi bi-check-circle-fill text-warning me-2"></i><strong>Location:</strong> Ulhasnagar East, Mumbai</li>
+                                <li><i class="bi bi-check-circle-fill text-warning me-2"></i><strong>Payment:</strong> Cash at Salon </li>
+                                <li><i class="bi bi-check-circle-fill text-warning me-2"></i><strong>Appointments:</strong> Instant confirmation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

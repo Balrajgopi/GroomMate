@@ -1,4 +1,4 @@
-﻿namespace GroomMate.Migrations
+namespace GroomMate.Migrations
 {
     using GroomMate.Models;
     using System;
@@ -38,6 +38,8 @@
             // --- STEP 3: SEED USERS ---
             context.Users.AddOrUpdate(u => u.Username,
                 new User { FullName = "Admin User", Username = "admin", Password = "password", Email = "admin@groommate.com", RoleID = adminRole.RoleID },
+                new User { FullName = "Alex Barber", Username = "alex", Password = "password", Email = "alex@groommate.com", RoleID = staffRole.RoleID },
+                new User { FullName = "John Stylist", Username = "john", Password = "password", Email = "john@groommate.com", RoleID = staffRole.RoleID },
                 new User { FullName = "Staff Member", Username = "staff", Password = "password", Email = "staff@groommate.com", RoleID = staffRole.RoleID },
                 new User { FullName = "Balraj Gopi", Username = "balraj", Password = "password", Email = "balraj@example.com", RoleID = customerRole.RoleID }
             );

@@ -1,4 +1,4 @@
-﻿using GroomMate.Models;
+using GroomMate.Models;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -66,14 +66,16 @@ namespace GroomMate.Controllers
             if (ModelState.IsValid)
             {
                 // Find the user in the database
+                string inputUsername = model.Username?.Trim() ?? string.Empty;
                 var user = db.Users.Include(u => u.Role) // Eagerly load the Role
-                                   .FirstOrDefault(u => u.Username.Equals(model.Username, System.StringComparison.OrdinalIgnoreCase)
+                                   .FirstOrDefault(u => (u.Username.ToLower() == inputUsername.ToLower()
+                                                      || u.Email.ToLower() == inputUsername.ToLower())
                                                       && u.Password == model.Password && !u.IsDeleted);
 
                 if (user != null)
                 {
-                    // Set authentication cookie
-                    FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
+                    // Set authentication cookie using database username
+                    FormsAuthentication.SetAuthCookie(user.Username, model.RememberMe);
 
                     // Store user details in session for easy access
                     Session["UserID"] = user.UserID;
@@ -115,6 +117,15 @@ namespace GroomMate.Controllers
             FormsAuthentication.SignOut();
             Session.Abandon(); // Clears the session
             return RedirectToAction("Index", "Home");
+        }
+
+        // GET: /Account/SwitchAccount
+        [HttpGet]
+        public ActionResult SwitchAccount()
+        {
+            FormsAuthentication.SignOut();
+            Session.Abandon(); // Clears the session
+            return RedirectToAction("Login", "Account");
         }
 
         // *** END: NEW LOGIN/LOGOUT ACTIONS ***

@@ -1,4 +1,6 @@
-﻿using GroomMate.Models;
+using GroomMate.Models;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -13,6 +15,20 @@ namespace GroomMate.Controllers
         public ActionResult Index()
         {
             var services = db.Services.Where(s => s.IsActive).ToList();
+
+            // Load feedbacks grouped by ServiceID for public display
+            var feedbacks = db.Feedbacks
+                .Include(f => f.Appointment.User)
+                .Include(f => f.Appointment.Service)
+                .ToList();
+
+            // Group feedbacks by ServiceID
+            var feedbackByService = feedbacks
+                .GroupBy(f => f.Appointment.ServiceID)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            ViewBag.FeedbackByService = feedbackByService;
+
             return View(services);
         }
 

@@ -1,4 +1,4 @@
-﻿using GroomMate.Models;
+using GroomMate.Models;
 using System;
 using System.Linq;
 using System.Net;
@@ -44,6 +44,10 @@ namespace GroomMate.Controllers
                 appointment.Status = "Pending";
                 db.Appointments.Add(appointment);
                 db.SaveChanges();
+
+                // Send email notification to customer
+                GroomMate.Security.EmailService.SendAppointmentNotification(appointment.AppointmentID, "Created");
+
                 return RedirectToAction("CustomerDashboard", "Dashboard");
             }
 
@@ -66,6 +70,9 @@ namespace GroomMate.Controllers
             {
                 appointment.Status = "Cancelled";
                 db.SaveChanges();
+
+                // Send email notification to customer
+                GroomMate.Security.EmailService.SendAppointmentNotification(appointment.AppointmentID, "Cancelled");
             }
             return RedirectToAction("CustomerDashboard", "Dashboard");
         }

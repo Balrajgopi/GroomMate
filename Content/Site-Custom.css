@@ -216,6 +216,39 @@ h1, h2, h3, h4, h5, h6, .playfair-font {
     font-family: 'Outfit', sans-serif;
 }
 
+/* --- Service Cards with Reviews --- */
+.service-card {
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    background-color: white;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px rgba(0,0,0,0.12);
+    border-color: rgba(217, 119, 6, 0.25);
+}
+
+.reviews-section {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 0.75rem;
+}
+
+.review-card {
+    transition: background 0.2s ease;
+}
+
+.review-card:hover {
+    background-color: #f0f4f8 !important;
+}
+
+.service-rating-bar {
+    padding: 0.3rem 0;
+}
+
 /* --- Custom Tables --- */
 .table-responsive-container {
     background-color: white;
@@ -283,6 +316,16 @@ h1, h2, h3, h4, h5, h6, .playfair-font {
     background-color: white;
     box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.15);
     outline: none;
+}
+
+.alert-validation-clean ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.alert-validation-clean li {
+    margin-bottom: 0;
 }
 
 /* --- Custom Status Badges --- */

@@ -1,4 +1,4 @@
-﻿using GroomMate.Models;
+using GroomMate.Models;
 using System;
 using System.Web.Security;
 using System.Linq;
@@ -15,7 +15,8 @@ namespace GroomMate.Security
             {
                 // --- UPDATED LOGIC ---
                 // Now filters out users where IsDeleted is true.
-                var user = db.Users.Include("Role").FirstOrDefault(u => u.Username == username && !u.IsDeleted);
+                var trimmedUsername = username?.Trim() ?? string.Empty;
+                var user = db.Users.Include("Role").FirstOrDefault(u => u.Username.ToLower() == trimmedUsername.ToLower() && !u.IsDeleted);
                 if (user != null && user.Role != null)
                 {
                     return new string[] { user.Role.RoleName };
@@ -30,8 +31,9 @@ namespace GroomMate.Security
             {
                 // --- UPDATED LOGIC ---
                 // Also filters out users where IsDeleted is true.
-                var user = db.Users.Include("Role").FirstOrDefault(u => u.Username == username && !u.IsDeleted);
-                return user != null && user.Role != null && user.Role.RoleName == roleName;
+                var trimmedUsername = username?.Trim() ?? string.Empty;
+                var user = db.Users.Include("Role").FirstOrDefault(u => u.Username.ToLower() == trimmedUsername.ToLower() && !u.IsDeleted);
+                return user != null && user.Role != null && user.Role.RoleName.ToLower() == roleName.Trim().ToLower();
             }
         }
 

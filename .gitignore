@@ -361,3 +361,11 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Local test files and binaries
+_ComprehensiveWebTest.*
+_LoginTest.*
+_RoleTest.cs
+
+# Generated local email files
+emails/

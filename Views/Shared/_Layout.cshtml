@@ -28,21 +28,34 @@
                 </ul>
 
                 <ul class="navbar-nav align-items-center">
-                    <li class="nav-item me-2">
-                        @Html.ActionLink("Book Now", "Index", "Service", null, new { @class = "btn btn-book-now" })
-                    </li>
-                    @if (User.Identity.IsAuthenticated)
+                    @{
+                        bool isLoggedIn = User.Identity.IsAuthenticated || Session["Username"] != null;
+                        string pageTitle = ViewBag.Title as string ?? "";
+                        bool isAuthPage = pageTitle.Contains("Log in") || pageTitle.Contains("Register") || pageTitle.Contains("Welcome Back") || pageTitle.Contains("Create Account");
+                        
+                        // Show "Book Now" in navbar ONLY for anonymous visitors who are NOT on Login or Register pages
+                        bool showNavbarBookNow = !isLoggedIn && !isAuthPage;
+                    }
+
+                    @if (showNavbarBookNow)
+                    {
+                        <li class="nav-item me-2">
+                            @Html.ActionLink("Book Now", "Index", "Service", null, new { @class = "btn btn-book-now" })
+                        </li>
+                    }
+
+                    @if (isLoggedIn)
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle me-1"></i> Hello @Session["Username"]!
+                                <i class="bi bi-person-circle me-1"></i> Hello @(Session["Username"] ?? User.Identity.Name)!
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                @if (User.IsInRole("Admin"))
+                                @if (User.IsInRole("Admin") || (Session["Role"] as string) == "Admin")
                                 {
                                     <li>@Html.ActionLink("Admin Dashboard", "AdminDashboard", "Dashboard", null, new { @class = "dropdown-item" })</li>
                                 }
-                                else if (User.IsInRole("Staff"))
+                                else if (User.IsInRole("Staff") || (Session["Role"] as string) == "Staff")
                                 {
                                     <li>@Html.ActionLink("Staff Dashboard", "StaffDashboard", "Dashboard", null, new { @class = "dropdown-item" })</li>
                                 }
@@ -50,6 +63,7 @@
                                 {
                                     <li>@Html.ActionLink("My Dashboard", "CustomerDashboard", "Dashboard", null, new { @class = "dropdown-item" })</li>
                                 }
+                                <li>@Html.ActionLink("Switch Account", "SwitchAccount", "Account", null, new { @class = "dropdown-item" })</li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     @using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm", @class = "m-0" }))
@@ -85,11 +99,11 @@
                     <span class="playfair-font fw-bold text-white fs-5">GroomMate</span>
                 </div>
                 <p class="mb-1 text-muted">&copy; @DateTime.Now.Year - Premium Men's Grooming Platform</p>
-                <div class="social-links d-flex justify-content-center gap-3 mt-2">
+                <!-- <div class="social-links d-flex justify-content-center gap-3 mt-2">
                     <span class="text-muted"><i class="bi bi-instagram"></i></span>
                     <span class="text-muted"><i class="bi bi-facebook"></i></span>
                     <span class="text-muted"><i class="bi bi-twitter"></i></span>
-                </div>
+                </div> -->
             </div>
         </footer>
     </div>

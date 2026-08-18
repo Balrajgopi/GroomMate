@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GroomMate.Models.Appointment>
+@model IEnumerable<GroomMate.Models.Appointment>
 
 @{
     ViewBag.Title = "Admin Dashboard";
@@ -15,6 +15,7 @@
             <th>Service</th>
             <th>Date & Time</th>
             <th>Assigned Staff</th>
+            <th>Service Completion</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -54,6 +55,24 @@
                         @(appt.Staff?.FullName ?? "Not Assigned")
                     }
                 </td>
+                <td>
+                    @if (appt.Status == "Completed")
+                    {
+                        <span class="badge bg-success"><i class="bi bi-check-circle-fill me-1"></i> Completed by Staff</span>
+                    }
+                    else if (appt.Status == "Confirmed")
+                    {
+                        <span class="badge bg-primary"><i class="bi bi-clock-history me-1"></i> Service In Progress</span>
+                    }
+                    else if (appt.Status == "Cancelled")
+                    {
+                        <span class="badge bg-secondary"><i class="bi bi-x-circle me-1"></i> Cancelled</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i> Awaiting Staff</span>
+                    }
+                </td>
                 <td><span class="badge bg-info text-dark">@appt.Status</span></td>
                 <td>
                     @if (appt.Status == "Pending" && appt.StaffId.HasValue)
@@ -70,26 +89,52 @@
     </tbody>
 </table>
 
-@if (Request.IsAuthenticated)
+<h3 class="mt-5 mb-3">Customer Feedbacks</h3>
+@if (ViewBag.Feedbacks == null || !((IEnumerable<GroomMate.Models.Feedback>)ViewBag.Feedbacks).Any())
 {
-    // If the user IS logged in, show a form for logging out
-    using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-        @Html.AntiForgeryToken()
-
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                @Html.ActionLink("Hello " + User.Identity.Name + "!", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Manage" })
-            </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Logout</a></li>
-        </ul>
-    }
+    <div class="alert alert-info">
+        No customer feedback has been submitted yet.
+    </div>
 }
 else
 {
-    // If the user IS NOT logged in, show links to log in and register
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Customer ID</th>
+                <th>Customer Name</th>
+                <th>Service</th>
+                <th>Appointment Date</th>
+                <th>Rating</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var fb in (IEnumerable<GroomMate.Models.Feedback>)ViewBag.Feedbacks)
+            {
+                <tr>
+                    <td>@fb.Appointment.UserID</td>
+                    <td>@fb.Appointment.User.FullName</td>
+                    <td>@fb.Appointment.Service.ServiceName</td>
+                    <td>@fb.Appointment.AppointmentDate.ToString("g")</td>
+                    <td>
+                        <span class="text-warning">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= fb.Rating)
+                                {
+                                    <i class="bi bi-star-fill"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-star"></i>
+                                }
+                            }
+                        </span>
+                    </td>
+                    <td>@fb.Comments</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }

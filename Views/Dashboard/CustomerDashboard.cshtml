@@ -11,9 +11,12 @@
             <h2 class="playfair-font mb-1">My Dashboard</h2>
             <p class="text-muted mb-0">Track your current status, booking history, and manage appointments in one place.</p>
         </div>
-        <div>
-            @Html.ActionLink("Book New Appointment", "Index", "Service", null, new { @class = "btn btn-book-now px-4" })
-        </div>
+        @if (Model.Any())
+        {
+            <div>
+                @Html.ActionLink("Book New Appointment", "Index", "Service", null, new { @class = "btn btn-book-now px-4" })
+            </div>
+        }
     </div>
 
     @if (!Model.Any())
@@ -44,7 +47,7 @@
                         <tr>
                             <td class="ps-4">
                                 <div class="fw-bold text-dark">@appt.Service.ServiceName</div>
-                                <div class="text-muted" style="font-size: 0.8rem;">₹ @appt.Service.Price.ToString("N0")</div>
+                                <div class="text-muted" style="font-size: 0.8rem;">&#8377; @appt.Service.Price.ToString("N0")</div>
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">

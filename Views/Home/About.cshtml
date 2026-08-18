@@ -1,38 +1,260 @@
 ﻿@{
     ViewBag.Title = "About GroomMate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var photoUrl = Url.Content("~/Content/Images/balraj-gopi.jpg");
 }
-<h2>@ViewBag.Title.</h2>
-<h3>Your personal grooming assistant.</h3>
 
-<hr />
+<div class="container py-5">
 
-<p>
-    The GroomMate project was developed as a modern, streamlined online appointment booking system specifically designed for a men's salon. The primary goal is to replace traditional, time-consuming booking methods (like phone calls or walk-ins) with an efficient and user-friendly digital platform.
-</p>
 
-<h4>Project Vision</h4>
-<p>
-    Our vision is to enhance the customer experience by providing a convenient way to schedule grooming services anytime, anywhere. Simultaneously, we aim to optimize the salon's operational workflow by automating appointment management, reducing administrative tasks for staff, and providing clear business insights for the administrator.
-</p>
+<div class="text-center mb-5">
+    <span class="text-warning text-uppercase fw-bold letter-spacing-1 d-block mb-2" style="font-size: 0.8rem; letter-spacing: 2px;">Premium Grooming Platform</span>
+    <h1 class="playfair-font display-4 mb-3">About <span class="text-warning">GroomMate</span></h1>
+    <p class="text-muted col-md-7 mx-auto" style="line-height: 1.8;">
+        A modern, full-stack online appointment booking system designed to digitize and elevate the men's salon experience &mdash; from booking to feedback.
+    </p>
+    <div class="mx-auto bg-warning mb-4" style="width: 60px; height: 3px; border-radius: 2px;"></div>
 
-<h4>Key Features</h4>
-<ul>
-    <li><strong>Customer Portal:</strong> New and existing customers can register, log in, browse available services (like haircuts, shaves, and beard trims), and book appointments with their preferred staff member at a convenient time.</li>
-    <li><strong>Staff Dashboard:</strong> Salon staff can log in to view their daily and weekly schedules, manage their upcoming appointments, and track their service history.</li>
-    <li><strong>Admin Dashboard:</strong> The salon administrator has a comprehensive overview of all business operations, including total appointments, customer management, staff scheduling, and service listings.</li>
-</ul>
 
-<h4>Technology Stack</h4>
-<p>
-    GroomMate is built using a robust and scalable technology stack:
-</p>
-<ul>
-    <li><strong>Framework:</strong> ASP.NET MVC with .NET Framework 4.8</li>
-    <li><strong>Language:</strong> C#</li>
-    <li><strong>Database:</strong> SQL Server with Entity Framework 6 (Code-First approach)</li>
-    <li><strong>Authentication:</strong> A custom Role-Based Authentication system to ensure secure access for Customers, Staff, and Admins.</li>
-</ul>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        <a href="https://github.com/Balrajgopi/GroomMate" target="_blank" class="btn btn-dark btn-sm px-4 py-2 rounded-pill">
+            <i class="bi bi-github me-2"></i>View Source Code on GitHub
+        </a>
+        <a href="@Url.Action("Index", "Service")" class="btn btn-warning btn-sm px-4 py-2 rounded-pill text-dark fw-bold">
+            <i class="bi bi-scissors me-2"></i>Browse Our Services
+        </a>
+    </div>
+</div>
 
-<p>
-    This project demonstrates a real-world application of web development principles to solve a practical business problem, creating a seamless connection between the salon and its clientele.
-</p>
+<hr class="opacity-10 mb-5">
+
+
+<div class="row g-4 align-items-center mb-5">
+    <div class="col-md-6">
+        <span class="text-warning fw-bold text-uppercase d-block mb-2" style="font-size: 0.75rem; letter-spacing: 1.5px;">Project Vision</span>
+        <h2 class="playfair-font mb-3">Why GroomMate?</h2>
+        <p class="text-muted" style="line-height: 1.9;">
+            Traditional salons rely on walk-ins and phone bookings &mdash; both frustrating for customers and inefficient for staff.
+            GroomMate replaces that friction with a seamless digital experience: browse services, pick a time slot, and get confirmed in seconds.
+        </p>
+        <p class="text-muted" style="line-height: 1.9;">
+            On the business side, it automates scheduling, reduces no-shows, lets admins manage every appointment in one place,
+            and gives staff clarity on their daily workload &mdash; all in real time.
+        </p>
+    </div>
+    <div class="col-md-6">
+        <div class="row g-3">
+            <div class="col-6">
+                <div class="card border-0 p-3 h-100 text-center" style="background: linear-gradient(135deg, #fef3c7, #fffbeb); border-radius: 12px;">
+                    <i class="bi bi-calendar-check fs-2 text-warning mb-2"></i>
+                    <div class="fw-bold text-dark" style="font-size: 0.9rem;">Online Booking</div>
+                    <div class="text-muted" style="font-size: 0.78rem;">24/7 appointment scheduling</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card border-0 p-3 h-100 text-center" style="background: linear-gradient(135deg, #dbeafe, #eff6ff); border-radius: 12px;">
+                    <i class="bi bi-people-fill fs-2 text-primary mb-2"></i>
+                    <div class="fw-bold text-dark" style="font-size: 0.9rem;">Role-Based Access</div>
+                    <div class="text-muted" style="font-size: 0.78rem;">Customer, Staff & Admin roles</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card border-0 p-3 h-100 text-center" style="background: linear-gradient(135deg, #d1fae5, #f0fdf4); border-radius: 12px;">
+                    <i class="bi bi-star-fill fs-2 text-success mb-2"></i>
+                    <div class="fw-bold text-dark" style="font-size: 0.9rem;">Live Reviews</div>
+                    <div class="text-muted" style="font-size: 0.78rem;">Customer feedback on each service</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card border-0 p-3 h-100 text-center" style="background: linear-gradient(135deg, #fce7f3, #fdf2f8); border-radius: 12px;">
+                    <i class="bi bi-shield-lock-fill fs-2 text-danger mb-2"></i>
+                    <div class="fw-bold text-dark" style="font-size: 0.9rem;">Secure Auth</div>
+                    <div class="text-muted" style="font-size: 0.78rem;">Custom forms authentication</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="mb-5">
+    <div class="text-center mb-4">
+        <span class="text-warning fw-bold text-uppercase d-block mb-2" style="font-size: 0.75rem; letter-spacing: 1.5px;">What's Inside</span>
+        <h2 class="playfair-font">Key Features</h2>
+    </div>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card border-0 p-4 h-100" style="border-radius: 14px; border-left: 4px solid #d97706 !important; border: 1px solid #e2e8f0;">
+                <i class="bi bi-person-check text-warning fs-3 mb-3"></i>
+                <h5 class="fw-bold">Customer Portal</h5>
+                <p class="text-muted mb-0" style="font-size: 0.88rem; line-height: 1.7;">
+                    Register, log in, browse 9+ grooming services with live reviews and pricing, and book appointments with real-time availability. Track your booking history and leave feedback.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 p-4 h-100" style="border-radius: 14px; border-left: 4px solid #3b82f6 !important; border: 1px solid #e2e8f0;">
+                <i class="bi bi-clipboard2-pulse text-primary fs-3 mb-3"></i>
+                <h5 class="fw-bold">Staff Dashboard</h5>
+                <p class="text-muted mb-0" style="font-size: 0.88rem; line-height: 1.7;">
+                    Salon staff log in to view their assigned appointments for the day, mark sessions as completed, and manage their personal schedule with ease.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 p-4 h-100" style="border-radius: 14px; border-left: 4px solid #10b981 !important; border: 1px solid #e2e8f0;">
+                <i class="bi bi-speedometer2 text-success fs-3 mb-3"></i>
+                <h5 class="fw-bold">Admin Dashboard</h5>
+                <p class="text-muted mb-0" style="font-size: 0.88rem; line-height: 1.7;">
+                    Full control over all appointments &mdash; assign staff, update statuses, manage service catalog, monitor business analytics, and oversee the entire operation.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="mb-5">
+    <div class="text-center mb-4">
+        <span class="text-warning fw-bold text-uppercase d-block mb-2" style="font-size: 0.75rem; letter-spacing: 1.5px;">Built With</span>
+        <h2 class="playfair-font">Technology Stack</h2>
+    </div>
+    <div class="row g-3 justify-content-center">
+        @{
+            var stack = new[]
+            {
+                new { Icon = "bi-filetype-cs", Label = "C#", Sub = "Primary language", Color = "#7b68ee" },
+                new { Icon = "bi-boxes", Label = "ASP.NET MVC", Sub = ".NET Framework 4.8", Color = "#512bd4" },
+                new { Icon = "bi-database-fill", Label = "SQL Server", Sub = "Entity Framework 6", Color = "#cc2927" },
+                new { Icon = "bi-lock-fill", Label = "Forms Auth", Sub = "Custom role system", Color = "#d97706" },
+                new { Icon = "bi-bootstrap-fill", Label = "Bootstrap 5", Sub = "Responsive UI", Color = "#7952b3" },
+                new { Icon = "bi-github", Label = "GitHub", Sub = "Version control", Color = "#24292e" },
+            };
+        }
+        @foreach (var item in stack)
+        {
+            <div class="col-6 col-md-2">
+                <div class="card border-0 p-3 text-center h-100" style="border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <i class="bi @item.Icon fs-2 mb-2" style="color: @item.Color;"></i>
+                    <div class="fw-bold text-dark" style="font-size: 0.85rem;">@item.Label</div>
+                    <div class="text-muted" style="font-size: 0.72rem;">@item.Sub</div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<hr class="opacity-10 mb-5">
+
+
+<div class="mb-5">
+    <div class="text-center mb-4">
+        <span class="text-warning fw-bold text-uppercase d-block mb-2" style="font-size: 0.75rem; letter-spacing: 1.5px;">The Creator</span>
+        <h2 class="playfair-font">About the Developer</h2>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card border-0 p-4 p-md-5" style="border-radius: 20px; border: 1px solid #e2e8f0; background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);">
+
+
+                <div class="d-flex flex-column flex-sm-row align-items-center gap-4 mb-4">
+                    <img src="@photoUrl"
+                         alt="Balraj Gopi"
+                         class="rounded-circle flex-shrink-0"
+                         style="width: 90px; height: 90px; object-fit: cover; object-position: top center; border: 3px solid #d97706; box-shadow: 0 4px 12px rgba(217,119,6,0.25);">
+                    <div class="text-center text-sm-start">
+                        <h3 class="playfair-font mb-1">Balraj Gopi</h3>
+                        <p class="text-warning fw-semibold mb-1" style="font-size: 0.9rem;">Full-Stack Developer</p>
+                        <p class="text-muted mb-0" style="font-size: 0.85rem;">
+                            Passionate about building practical, elegant web applications using modern Microsoft technologies.
+                        </p>
+                    </div>
+                </div>
+
+                <p class="text-muted mb-4" style="line-height: 1.9; font-size: 0.92rem;">
+                    GroomMate was conceived and built entirely by Balraj Gopi as a real-world demonstration of full-stack ASP.NET MVC development.
+                    The project covers the complete software development lifecycle &mdash; from database design with Entity Framework to UI/UX,
+                    role-based authentication, appointment workflow, and live customer feedback &mdash; all from scratch.
+                </p>
+
+
+                <div class="d-flex flex-column gap-2 mb-4">
+                    <a href="https://github.com/Balrajgopi/GroomMate" target="_blank"
+                       class="d-flex align-items-center gap-3 p-3 rounded-3 text-decoration-none"
+                       style="background: #f8f9fa; border: 1px solid #e2e8f0; transition: all 0.2s ease;"
+                       onmouseover="this.style.borderColor='#d97706'; this.style.background='#fffbeb';"
+                       onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='#f8f9fa';">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-dark text-white flex-shrink-0" style="width: 36px; height: 36px;">
+                            <i class="bi bi-github" style="font-size: 1rem;"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold text-dark" style="font-size: 0.85rem;">GitHub Source Code</div>
+                            <div class="text-muted" style="font-size: 0.78rem;">github.com/Balrajgopi/GroomMate</div>
+                        </div>
+                        <i class="bi bi-arrow-up-right-circle ms-auto text-muted"></i>
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/balraj-gopi" target="_blank"
+                       class="d-flex align-items-center gap-3 p-3 rounded-3 text-decoration-none"
+                       style="background: #f8f9fa; border: 1px solid #e2e8f0; transition: all 0.2s ease;"
+                       onmouseover="this.style.borderColor='#0077b5'; this.style.background='#f0f8ff';"
+                       onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='#f8f9fa';">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 text-white" style="width: 36px; height: 36px; background: #0077b5;">
+                            <i class="bi bi-linkedin" style="font-size: 1rem;"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold text-dark" style="font-size: 0.85rem;">LinkedIn Profile</div>
+                            <div class="text-muted" style="font-size: 0.78rem;">linkedin.com/in/balraj-gopi</div>
+                        </div>
+                        <i class="bi bi-arrow-up-right-circle ms-auto text-muted"></i>
+                    </a>
+
+                    <a href="mailto:Balrajgopi0000@gmail.com"
+                       class="d-flex align-items-center gap-3 p-3 rounded-3 text-decoration-none"
+                       style="background: #f8f9fa; border: 1px solid #e2e8f0; transition: all 0.2s ease;"
+                       onmouseover="this.style.borderColor='#ea4335'; this.style.background='#fff5f5';"
+                       onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='#f8f9fa';">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 text-white" style="width: 36px; height: 36px; background: #ea4335;">
+                            <i class="bi bi-envelope-fill" style="font-size: 1rem;"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold text-dark" style="font-size: 0.85rem;">Gmail</div>
+                            <div class="text-muted" style="font-size: 0.78rem;">Balrajgopi0000@gmail.com</div>
+                        </div>
+                        <i class="bi bi-arrow-up-right-circle ms-auto text-muted"></i>
+                    </a>
+
+                    <a href="mailto:balrajgopi2005@outlook.com"
+                       class="d-flex align-items-center gap-3 p-3 rounded-3 text-decoration-none"
+                       style="background: #f8f9fa; border: 1px solid #e2e8f0; transition: all 0.2s ease;"
+                       onmouseover="this.style.borderColor='#0078d4'; this.style.background='#f0f4ff';"
+                       onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='#f8f9fa';">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 text-white" style="width: 36px; height: 36px; background: #0078d4;">
+                            <i class="bi bi-microsoft" style="font-size: 1rem;"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold text-dark" style="font-size: 0.85rem;">Outlook</div>
+                            <div class="text-muted" style="font-size: 0.78rem;">balrajgopi2005@outlook.com</div>
+                        </div>
+                        <i class="bi bi-arrow-up-right-circle ms-auto text-muted"></i>
+                    </a>
+                </div>
+
+
+                <div class="text-center pt-2 border-top">
+                    <p class="text-muted mb-3" style="font-size: 0.85rem;">Want to collaborate or have questions about the project?</p>
+                    <a href="https://github.com/Balrajgopi/GroomMate" target="_blank" class="btn btn-dark rounded-pill px-4 me-2">
+                        <i class="bi bi-github me-2"></i>Star on GitHub
+                    </a>
+                    <a href="mailto:Balrajgopi0000@gmail.com" class="btn btn-outline-warning rounded-pill px-4">
+                        <i class="bi bi-envelope me-2"></i>Get in Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
