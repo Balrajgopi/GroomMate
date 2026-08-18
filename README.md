@@ -1,4 +1,4 @@
-# ✂️ GroomMate — Premium Men's Salon Appointment Platform
+# ✂️ GroomMate —  Men's Salon Appointment Platform
 
 GroomMate is a modern, responsive, full-stack appointment booking and management platform built specifically for men's grooming salons. The system replaces traditional phone or walk-in booking methods with a streamlined digital portal for customers, staff, and administrators.
 
