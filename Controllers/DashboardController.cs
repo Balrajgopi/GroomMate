@@ -42,14 +42,14 @@ namespace GroomMate.Controllers
         [Authorize(Roles = "Staff")]
         public ActionResult StaffDashboard()
         {
-            if (Session["UserID"] == null)
+            int? currentStaffId = RestoreUserSession();
+            if (!currentStaffId.HasValue)
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            int currentStaffId = (int)Session["UserID"];
             var staffAppointments = db.Appointments
-                .Where(a => a.StaffId == currentStaffId)
+                .Where(a => a.StaffId == currentStaffId.Value)
                 .Include(a => a.User)
                 .Include(a => a.Service)
                 .OrderByDescending(a => a.AppointmentDate)
@@ -58,27 +58,31 @@ namespace GroomMate.Controllers
             return View(staffAppointments);
         }
 
-        // *** THIS IS THE NEW ACTION TO FIX THE 404 ERROR ***
         // GET: Dashboard/CustomerDashboard
         [Authorize(Roles = "Customer")]
         public ActionResult CustomerDashboard()
         {
-            if (Session["UserID"] == null)
+            int? currentUserId = RestoreUserSession();
+            if (!currentUserId.HasValue)
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            int currentUserId = (int)Session["UserID"];
-
             // Fetch all appointments for the currently logged-in customer
             var customerAppointments = db.Appointments
-                .Where(a => a.UserID == currentUserId)
+                .Where(a => a.UserID == currentUserId.Value)
                 .Include(a => a.Service)
-                .Include(a => a.Staff) // Include staff details
+                .Include(a => a.Staff)
+                .Include(a => a.Feedback)
                 .OrderByDescending(a => a.AppointmentDate)
                 .ToList();
 
             return View(customerAppointments);
+        }
+
+        private int? RestoreUserSession()
+        {
+            return GroomMate.Security.AuthHelper.RestoreUserSession(HttpContext, db);
         }
 
         protected override void Dispose(bool disposing)

@@ -24,7 +24,7 @@ namespace GroomMate.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (db.Users.Any(u => u.Username.Equals(user.Username, System.StringComparison.OrdinalIgnoreCase)))
+                if (db.Users.Any(u => u.Username.ToLower() == user.Username.ToLower()))
                 {
                     ModelState.AddModelError("Username", "This username is already taken.");
                     return View(user);

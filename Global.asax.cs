@@ -1,4 +1,4 @@
-﻿using System.Data.Entity; // Add this using statement
+using System.Data.Entity; // Add this using statement
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -20,6 +20,18 @@ namespace GroomMate
             // as it gives you full control and prevents EF from trying to change the
             // database behind your back.
             Database.SetInitializer<Models.GroomMateContext>(null);
+        }
+
+        protected void Application_PostAcquireRequestState(object sender, System.EventArgs e)
+        {
+            var context = System.Web.HttpContext.Current;
+            if (context != null && context.Session != null && context.User != null && context.User.Identity != null && context.User.Identity.IsAuthenticated)
+            {
+                if (context.Session["UserID"] == null)
+                {
+                    GroomMate.Security.AuthHelper.RestoreUserSession(context);
+                }
+            }
         }
     }
 }

@@ -29,18 +29,31 @@ namespace GroomMate.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Appointment appointment)
         {
-            // First, check the business hours before checking ModelState
+            DateTime currentIst = GroomMate.Security.TimeZoneHelper.GetCurrentIst();
+            if (appointment.AppointmentDate < currentIst)
+            {
+                ModelState.AddModelError("AppointmentDate", "Cannot book an appointment in the past. Please select a future date and time.");
+            }
+
+            // Check business hours
             string validationError = IsWithinBusinessHours(appointment.AppointmentDate);
             if (!string.IsNullOrEmpty(validationError))
             {
-                // If there's a validation error, add it to the ModelState
                 ModelState.AddModelError("AppointmentDate", validationError);
+            }
+
+            // Double booking prevention: Check if slot is already booked by an active appointment
+            bool isSlotTaken = db.Appointments.Any(a => a.AppointmentDate == appointment.AppointmentDate && a.Status != "Cancelled");
+            if (isSlotTaken)
+            {
+                ModelState.AddModelError("AppointmentDate", "This time slot is already booked by another customer. Please select a different time.");
             }
 
             if (ModelState.IsValid)
             {
-                if (Session["UserID"] == null) return RedirectToAction("Login", "Account");
-                appointment.UserID = (int)Session["UserID"];
+                int? currentUserId = GroomMate.Security.AuthHelper.RestoreUserSession(HttpContext, db);
+                if (!currentUserId.HasValue) return RedirectToAction("Login", "Account");
+                appointment.UserID = currentUserId.Value;
                 appointment.Status = "Pending";
                 db.Appointments.Add(appointment);
                 db.SaveChanges();
@@ -62,9 +75,9 @@ namespace GroomMate.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Cancel(int id)
         {
-            if (Session["UserID"] == null) return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
-            int currentUserId = (int)Session["UserID"];
-            var appointment = db.Appointments.FirstOrDefault(a => a.AppointmentID == id && a.UserID == currentUserId);
+            int? currentUserId = GroomMate.Security.AuthHelper.RestoreUserSession(HttpContext, db);
+            if (!currentUserId.HasValue) return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            var appointment = db.Appointments.FirstOrDefault(a => a.AppointmentID == id && a.UserID == currentUserId.Value);
             if (appointment == null) return HttpNotFound();
             if (appointment.Status == "Pending" || appointment.Status == "Confirmed")
             {

@@ -1,4 +1,5 @@
 using GroomMate.Models;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -25,15 +26,28 @@ namespace GroomMate.Controllers
             }
 
             // Ensure the logged-in staff member is the one assigned to this appointment
-            int currentStaffId = (int)Session["UserID"];
-            if (appointment.StaffId != currentStaffId)
+            int? currentStaffId = GroomMate.Security.AuthHelper.RestoreUserSession(HttpContext, db);
+            if (!currentStaffId.HasValue)
+            {
+                TempData["ErrorMessage"] = "Your session has expired. Please log in again.";
+                return RedirectToAction("Login", "Account");
+            }
+            if (appointment.StaffId != currentStaffId.Value)
             {
                 // If not, it's an unauthorized action. Return a "Bad Request" error.
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "You are not assigned to this appointment.");
             }
 
-            // Prevent completing future appointments
-            if (appointment.AppointmentDate > System.DateTime.Now)
+            // Only confirmed appointments can be marked as completed
+            if (!string.Equals(appointment.Status, "Confirmed", System.StringComparison.OrdinalIgnoreCase))
+            {
+                TempData["ErrorMessage"] = "Only confirmed appointments can be marked as completed.";
+                return RedirectToAction("StaffDashboard", "Dashboard");
+            }
+
+            // Prevent completing future appointments based on India Standard Time (IST)
+            DateTime currentIst = GroomMate.Security.TimeZoneHelper.GetCurrentIst();
+            if (appointment.AppointmentDate > currentIst)
             {
                 TempData["ErrorMessage"] = "Cannot complete an appointment that is scheduled in the future.";
                 return RedirectToAction("StaffDashboard", "Dashboard");

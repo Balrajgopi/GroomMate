@@ -24,6 +24,7 @@ namespace GroomMate.Controllers
 
             // Group feedbacks by ServiceID
             var feedbackByService = feedbacks
+                .Where(f => f.Appointment != null)
                 .GroupBy(f => f.Appointment.ServiceID)
                 .ToDictionary(g => g.Key, g => g.ToList());
 

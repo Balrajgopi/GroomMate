@@ -23,6 +23,11 @@ namespace GroomMate.Controllers
                 return HttpNotFound();
             }
 
+            if (appointment.Status == "Cancelled" || appointment.Status == "Completed")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Cannot assign staff to a cancelled or completed appointment.");
+            }
+
             // Find the staff member to assign
             var staff = db.Users.FirstOrDefault(u => u.UserID == staffId && u.Role.RoleName == "Staff");
             if (staff == null)
@@ -51,6 +56,11 @@ namespace GroomMate.Controllers
             if (appointment == null)
             {
                 return HttpNotFound();
+            }
+
+            if (appointment.Status != "Pending")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Only pending appointments can be confirmed.");
             }
 
             // Change the status and save

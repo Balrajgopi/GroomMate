@@ -16,6 +16,10 @@
     </div>
 }
 
+@{
+    var currentIst = GroomMate.Security.TimeZoneHelper.GetCurrentIst();
+}
+
 @if (!Model.Any())
 {
     <div class="alert alert-info" role="alert">
@@ -45,7 +49,7 @@ else
                     <td>
                         @if (appt.Status == "Confirmed")
                         {
-                            if (appt.AppointmentDate <= DateTime.Now)
+                            if (appt.AppointmentDate <= currentIst)
                             {
                                 using (Html.BeginForm("CompleteAppointment", "Staff", new { id = appt.AppointmentID }, FormMethod.Post))
                                 {

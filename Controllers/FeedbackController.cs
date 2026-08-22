@@ -1,4 +1,4 @@
-﻿using GroomMate.Models;
+using GroomMate.Models;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -12,7 +12,9 @@ namespace GroomMate.Controllers
 
         public ActionResult Submit(int appointmentId)
         {
-            int userId = (int)Session["UserID"];
+            int? currentUserId = GroomMate.Security.AuthHelper.RestoreUserSession(HttpContext, db);
+            if (!currentUserId.HasValue) return RedirectToAction("Login", "Account");
+            int userId = currentUserId.Value;
             var appointment = db.Appointments.FirstOrDefault(a => a.AppointmentID == appointmentId && a.UserID == userId && a.Status == "Completed");
             var hasFeedback = db.Feedbacks.Any(f => f.AppointmentID == appointmentId);
 
@@ -25,12 +27,21 @@ namespace GroomMate.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Submit(int appointmentId, int rating, string comments)
         {
-            int userId = (int)Session["UserID"];
-            var appointment = db.Appointments.FirstOrDefault(a => a.AppointmentID == appointmentId && a.UserID == userId);
+            int? currentUserId = GroomMate.Security.AuthHelper.RestoreUserSession(HttpContext, db);
+            if (!currentUserId.HasValue) return RedirectToAction("Login", "Account");
+            int userId = currentUserId.Value;
+            var appointment = db.Appointments.FirstOrDefault(a => a.AppointmentID == appointmentId && a.UserID == userId && a.Status == "Completed");
 
             if (appointment == null) return HttpNotFound();
+
+            var hasFeedback = db.Feedbacks.Any(f => f.AppointmentID == appointmentId);
+            if (hasFeedback)
+            {
+                return RedirectToAction("AlreadySubmitted");
+            }
 
             var feedback = new Feedback { AppointmentID = appointmentId, Rating = rating, Comments = comments };
             db.Feedbacks.Add(feedback);

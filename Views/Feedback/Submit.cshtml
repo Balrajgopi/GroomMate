@@ -1,8 +1,9 @@
-﻿@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 <h3>Submit Feedback</h3>
 @using (Html.BeginForm("Submit", "Feedback", FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
     <input type="hidden" name="appointmentId" value="@ViewBag.AppointmentId" />
     <div class="mb-3">
         <label class="form-label">Rating (1-5)</label>
